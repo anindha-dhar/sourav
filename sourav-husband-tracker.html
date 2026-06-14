@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sourav As a Husband — Point Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:#0d0520;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% -5%,#3d0d6b 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 5%,#1f0050 0%,transparent 55%),
+    radial-gradient(ellipse 50% 40% at 50% 100%,#1a0038 0%,transparent 60%);
+  min-height:100vh;
+  color:#fff;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ── Floating symbols ── */
+.bg-sym{
+  position:fixed;pointer-events:none;user-select:none;z-index:0;
+  animation:floatUp linear infinite;opacity:0;
+}
+@keyframes floatUp{
+  0%  {transform:translateY(110vh) rotate(0deg) scale(.6);opacity:0}
+  8%  {opacity:1}
+  85% {opacity:.25}
+  100%{transform:translateY(-12vh) rotate(25deg) scale(1.3);opacity:0}
+}
+
+/* ── Page layout ── */
+.page{
+  max-width:520px;margin:0 auto;
+  padding:50px 22px 70px;
+  position:relative;z-index:1;
+  text-align:center;
+}
+
+/* ── Header ── */
+.crown-wrap{
+  font-size:3.2rem;
+  display:inline-block;
+  animation:bob 3s ease-in-out infinite;
+  margin-bottom:14px;
+}
+@keyframes bob{
+  0%,100%{transform:translateY(0) rotate(-4deg)}
+  50%{transform:translateY(-10px) rotate(4deg)}
+}
+.title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.75rem,5.5vw,2.55rem);
+  font-weight:700;
+  background:linear-gradient(135deg,#ffb7c5 0%,#fad4c0 45%,#ffe8c2 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.2;margin-bottom:6px;
+}
+.sub-title{
+  font-size:.7rem;letter-spacing:4px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.28);
+}
+
+/* ── Ornamental divider ── */
+.orn{
+  display:flex;align-items:center;gap:14px;
+  margin:28px 0;
+  color:rgba(255,255,255,.15);font-size:.8rem;letter-spacing:6px;
+}
+.orn::before,.orn::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
+
+/* ── Circular score ── */
+.ring-wrap{
+  position:relative;width:230px;height:230px;margin:0 auto 26px;
+}
+.ring-svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:rgba(255,255,255,.06);stroke-width:14}
+.ring-fill{
+  fill:none;
+  stroke:url(#rg);
+  stroke-width:14;
+  stroke-linecap:round;
+  stroke-dasharray:628.3;
+  stroke-dashoffset:628.3;
+  transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 0 6px rgba(255,100,150,.55));
+}
+.ring-inner{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+.ring-num{
+  font-family:'Playfair Display',serif;
+  font-size:4.5rem;font-weight:700;line-height:1;
+  text-shadow:0 0 40px rgba(255,107,160,.7);
+  transition:color .3s;
+}
+.ring-num.bump{animation:numBump .45s ease}
+@keyframes numBump{
+  0%,100%{transform:scale(1)}
+  45%{transform:scale(1.3)}
+}
+.ring-denom{font-size:.95rem;color:rgba(255,255,255,.32);margin-top:4px}
+
+/* ── Pass badge ── */
+.pass-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,50,90,.1);
+  border:1px solid rgba(255,50,90,.3);
+  border-radius:100px;padding:8px 22px;
+  font-size:.8rem;color:#ff7b9a;
+  margin-bottom:26px;
+  letter-spacing:.3px;
+}
+
+/* ── Status card ── */
+.status-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:20px 24px;
+  margin-bottom:22px;
+  min-height:90px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;
+  transition:border-color .5s;
+}
+.st-icon{font-size:1.9rem;line-height:1}
+.st-msg{font-size:.86rem;color:rgba(255,255,255,.62);line-height:1.65}
+
+/* ── Unlock card ── */
+.unlock-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:20px;padding:22px 22px 18px;
+  margin-bottom:14px;
+  transition:border-color .4s,background .4s;
+}
+.unlock-card.open{
+  border-color:rgba(80,240,140,.38);
+  background:rgba(80,240,140,.03);
+}
+.lock-ico{font-size:1.75rem;display:block;margin-bottom:10px;transition:all .4s}
+.pw-label{font-size:.68rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.27);margin-bottom:14px}
+.pw-row{display:flex;gap:10px}
+.pw-in{
+  flex:1;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:12px;padding:12px 16px;
+  font-size:.94rem;font-family:'Poppins',sans-serif;color:#fff;
+  outline:none;transition:border-color .3s;
+}
+.pw-in::placeholder{color:rgba(255,255,255,.22)}
+.pw-in:focus{border-color:rgba(255,107,157,.55)}
+.pw-in.shake{animation:shk .42s ease}
+@keyframes shk{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-9px)}
+  40%{transform:translateX(9px)}
+  60%{transform:translateX(-5px)}
+  80%{transform:translateX(5px)}
+}
+.unlock-btn{
+  background:linear-gradient(135deg,#ff6b9d,#c94b90);
+  border:none;border-radius:12px;
+  padding:12px 20px;color:#fff;
+  font-weight:600;font-size:.88rem;
+  font-family:'Poppins',sans-serif;
+  cursor:pointer;white-space:nowrap;
+  transition:transform .2s,box-shadow .2s;
+}
+.unlock-btn:hover{transform:scale(1.06);box-shadow:0 6px 26px rgba(255,107,157,.45)}
+.unlock-btn:active{transform:scale(.98)}
+.err-msg{font-size:.76rem;color:#ff7c7c;margin-top:10px;display:none}
+.ok-msg{font-size:.78rem;color:#5cf09a;margin-top:10px;display:none}
+
+/* ── Add button ── */
+.add-btn{
+  width:100%;padding:18px;
+  font-size:1.12rem;font-weight:600;
+  font-family:'Poppins',sans-serif;
+  border:none;border-radius:16px;
+  cursor:pointer;
+  transition:transform .25s,box-shadow .25s,opacity .3s;
+  letter-spacing:.4px;
+}
+.add-btn:disabled{
+  background:rgba(255,255,255,.07);
+  color:rgba(255,255,255,.18);cursor:not-allowed;
+}
+.add-btn.enabled{
+  background:linear-gradient(135deg,#ff6b9d 0%,#e8125e 100%);
+  color:#fff;
+  box-shadow:0 8px 34px rgba(255,60,130,.45);
+}
+.add-btn.enabled:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(255,60,130,.6)}
+.add-btn.enabled:active{transform:translateY(-1px)}
+
+/* ── Score milestone badges ── */
+.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:22px}
+.badge{
+  font-size:.72rem;padding:5px 14px;border-radius:100px;
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.35);
+  transition:all .5s;
+}
+.badge.earned{
+  border-color:rgba(255,180,100,.5);
+  color:#ffd580;
+  background:rgba(255,180,100,.1);
+}
+
+/* ── Footer ── */
+.footer{margin-top:34px;font-size:.7rem;color:rgba(255,255,255,.13);line-height:1.8}
+
+/* ── Toast ── */
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:rgba(255,70,130,.88);
+  backdrop-filter:blur(14px);
+  color:#fff;font-weight:600;font-size:.88rem;
+  padding:13px 30px;border-radius:100px;
+  z-index:1000;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── Particles ── */
+.pt{
+  position:fixed;pointer-events:none;
+  font-size:1.2rem;z-index:999;
+  animation:ptBurst .85s ease-out forwards;
+}
+@keyframes ptBurst{
+  0%{transform:translate(0,0) scale(.3);opacity:1}
+  100%{transform:translate(var(--px),var(--py)) scale(1);opacity:0}
+}
+
+/* ── 100pts glow ── */
+@keyframes glowPulse{
+  0%,100%{text-shadow:0 0 20px rgba(255,107,160,.6)}
+  50%{text-shadow:0 0 55px rgba(255,215,0,1),0 0 90px rgba(255,107,160,.5)}
+}
+.ring-num.max{animation:glowPulse 1.8s ease-in-out infinite}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">＋1 Point Added! 💕</div>
+
+<div class="page">
+
+  <!-- ── Header ── -->
+  <div class="crown-wrap">💍</div>
+  <h1 class="title">Sourav As a Husband</h1>
+  <p class="sub-title">Point Tracker</p>
+
+  <!-- ── Divider ── -->
+  <div class="orn">♥ ♥ ♥</div>
+
+  <!-- ── Score Ring ── -->
+  <div class="ring-wrap">
+    <svg class="ring-svg" viewBox="0 0 230 230" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#ff6b9d"/>
+          <stop offset="55%"  stop-color="#ff2d6f"/>
+          <stop offset="100%" stop-color="#ffd700"/>
+        </linearGradient>
+      </defs>
+      <circle class="ring-track" cx="115" cy="115" r="100"/>
+      <circle class="ring-fill"  cx="115" cy="115" r="100" id="ringFill"/>
+    </svg>
+    <div class="ring-inner">
+      <div class="ring-num" id="ringNum">0</div>
+      <div class="ring-denom">/ 100</div>
+    </div>
+  </div>
+
+  <!-- ── Pass badge ── -->
+  <div class="pass-badge">
+    ⚠️ Needs <strong style="margin:0 5px">101 points</strong> to pass — good luck! 😏
+  </div>
+
+  <!-- ── Status ── -->
+  <div class="status-card" id="statusCard">
+    <div class="st-icon" id="stIcon">💭</div>
+    <div class="st-msg"  id="stMsg">The journey begins… every single point counts!</div>
+  </div>
+
+  <!-- ── Unlock section ── -->
+  <div class="unlock-card" id="unlockCard">
+    <span class="lock-ico" id="lockIco">🔒</span>
+    <div class="pw-label">Password required to add points</div>
+    <div class="pw-row">
+      <input class="pw-in" type="password" id="pwIn" placeholder="Enter secret password…"/>
+      <button class="unlock-btn" onclick="tryUnlock()">Unlock</button>
+    </div>
+    <div class="err-msg" id="errMsg">❌ Wrong password! Try again.</div>
+    <div class="ok-msg"  id="okMsg">✅ Unlocked! Now add your point.</div>
+  </div>
+
+  <!-- ── Add button ── -->
+  <button class="add-btn" id="addBtn" disabled onclick="addPoint()">
+    ＋ 1 Point
+  </button>
+
+  <!-- ── Milestone badges ── -->
+  <div class="badges" id="badgesRow">
+    <span class="badge" data-at="10"  id="b10">🌱 10 pts</span>
+    <span class="badge" data-at="25"  id="b25">🌿 25 pts</span>
+    <span class="badge" data-at="50"  id="b50">⭐ 50 pts</span>
+    <span class="badge" data-at="75"  id="b75">🔥 75 pts</span>
+    <span class="badge" data-at="100" id="b100">👑 100 pts</span>
+  </div>
+
+  <div class="footer">
+    Made with 💕 for Rumpa<br>
+    <span style="font-size:.62rem;opacity:.7">Scores are saved in your browser</span>
+  </div>
+</div>
+
+<script>
+// ── Constants ──────────────────────────────────────────────
+const C = 2 * Math.PI * 100; // 628.318…
+
+// ── State ──────────────────────────────────────────────────
+let pts      = parseInt(localStorage.getItem('srh_pts') || '0', 10);
+let unlocked = false;
+
+// ── Boot ───────────────────────────────────────────────────
+spawnBgSymbols();
+render();
+
+// ── Render ─────────────────────────────────────────────────
+function render(){
+  document.getElementById('ringNum').textContent = pts;
+
+  // SVG ring progress (capped visual at 100)
+  const pct    = Math.min(pts / 100, 1);
+  const offset = C * (1 - pct);
+  document.getElementById('ringFill').style.strokeDashoffset = offset;
+
+  // Max glow
+  const numEl = document.getElementById('ringNum');
+  if(pts >= 100) numEl.classList.add('max');
+  else           numEl.classList.remove('max');
+
+  // Milestone badges
+  [10,25,50,75,100].forEach(n => {
+    const el = document.getElementById('b'+n);
+    if(pts >= n) el.classList.add('earned');
+    else         el.classList.remove('earned');
+  });
+
+  updateStatus();
+}
+
+// ── Status messages ────────────────────────────────────────
+function updateStatus(){
+  const icon = document.getElementById('stIcon');
+  const msg  = document.getElementById('stMsg');
+  const card = document.getElementById('statusCard');
+
+  const stages = [
+    { at:0,   ico:'💭', text:'The journey begins… every single point counts!'},
+    { at:1,   ico:'🌱', text:`${pts}/100 — Off to a humble start. She's keeping score!`},
+    { at:10,  ico:'🐌', text:`${pts}/100 — Slow progress, but progress! Keep earning, Sourav.`},
+    { at:25,  ico:'🤔', text:`${pts}/100 — Getting warmer. Rumpa is watching closely… 👁`},
+    { at:50,  ico:'⭐', text:`${pts}/100 — Halfway! Don't celebrate yet — the target is 101. 😏`},
+    { at:75,  ico:'🔥', text:`${pts}/100 — So close! But remember: you NEED 101 to pass!`},
+    { at:100, ico:'😈', text:`100/100 — Max points reached! But you need 101. It's IMPOSSIBLE! 😈`},
+    { at:101, ico:'🎉', text:`${pts} points! You broke the system. Absolute legend! 👑💕`},
+  ];
+
+  let chosen = stages[0];
+  for(const s of stages){ if(pts >= s.at) chosen = s; }
+
+  icon.textContent = chosen.ico;
+  msg.textContent  = chosen.text.replace(/\$\{pts\}/g, pts);
+}
+
+// ── Unlock ─────────────────────────────────────────────────
+function tryUnlock(){
+  const inp  = document.getElementById('pwIn');
+  const err  = document.getElementById('errMsg');
+  const ok   = document.getElementById('okMsg');
+  const card = document.getElementById('unlockCard');
+
+  if(inp.value === 'rumpa2026'){
+    unlocked = true;
+    document.getElementById('lockIco').textContent = '🔓';
+    card.classList.add('open');
+    err.style.display = 'none';
+    ok.style.display  = 'block';
+    inp.value = '';
+    const btn = document.getElementById('addBtn');
+    btn.disabled = false;
+    btn.classList.add('enabled');
+  } else {
+    err.style.display = 'block';
+    ok.style.display  = 'none';
+    inp.classList.remove('shake');
+    void inp.offsetWidth;
+    inp.classList.add('shake');
+    inp.style.borderColor = 'rgba(255,90,90,.7)';
+    setTimeout(()=>{ inp.style.borderColor=''; inp.classList.remove('shake'); }, 600);
+  }
+}
+
+document.getElementById('pwIn').addEventListener('keydown', e=>{
+  if(e.key==='Enter') tryUnlock();
+});
+
+// ── Add point ──────────────────────────────────────────────
+function addPoint(){
+  if(!unlocked) return;
+  pts++;
+  localStorage.setItem('srh_pts', pts);
+
+  // Bump animation
+  const n = document.getElementById('ringNum');
+  n.classList.remove('bump');
+  void n.offsetWidth;
+  n.classList.add('bump');
+
+  render();
+  toast();
+  burst();
+
+  // Re-lock
+  setTimeout(relock, 1800);
+}
+
+function relock(){
+  unlocked = false;
+  document.getElementById('lockIco').textContent = '🔒';
+  document.getElementById('unlockCard').classList.remove('open');
+  document.getElementById('okMsg').style.display  = 'none';
+  const btn = document.getElementById('addBtn');
+  btn.disabled = true;
+  btn.classList.remove('enabled');
+}
+
+// ── Toast ──────────────────────────────────────────────────
+function toast(){
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+// ── Burst particles ────────────────────────────────────────
+function burst(){
+  const btn  = document.getElementById('addBtn');
+  const rect = btn.getBoundingClientRect();
+  const cx   = rect.left + rect.width  / 2;
+  const cy   = rect.top  + rect.height / 2;
+  const pool = ['❤️','💕','✨','💖','⭐','🌸','💫','🎊','💗'];
+
+  for(let i=0;i<16;i++){
+    const el = document.createElement('div');
+    el.className   = 'pt';
+    el.textContent = pool[Math.floor(Math.random()*pool.length)];
+    el.style.left  = cx+'px';
+    el.style.top   = cy+'px';
+    const angle = (i/16)*Math.PI*2 + (Math.random()-.5)*.4;
+    const dist  = 65 + Math.random()*90;
+    el.style.setProperty('--px', Math.cos(angle)*dist+'px');
+    el.style.setProperty('--py', Math.sin(angle)*dist+'px');
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 860);
+  }
+}
+
+// ── Floating background symbols ────────────────────────────
+function spawnBgSymbols(){
+  const syms   = ['❤','♡','✦','♥','·','✧','◇','♢'];
+  const colors = [
+    'rgba(255,107,157,.5)','rgba(255,77,109,.4)','rgba(255,215,0,.3)',
+    'rgba(200,75,144,.4)','rgba(255,120,160,.35)'
+  ];
+  for(let i=0;i<22;i++){
+    const el         = document.createElement('div');
+    el.className     = 'bg-sym';
+    el.textContent   = syms[Math.floor(Math.random()*syms.length)];
+    el.style.left    = Math.random()*100+'vw';
+    el.style.bottom  = '-40px';
+    el.style.fontSize= (Math.random()*20+8)+'px';
+    el.style.color   = colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration = (Math.random()*14+9)+'s';
+    el.style.animationDelay   = (Math.random()*12)+'s';
+    document.body.appendChild(el);
+  }
+}
+</script>
+</body>
+</html>
